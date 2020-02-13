@@ -11,6 +11,6 @@ module.exports = {
       }
     }
   },
-  // publicPath: process.env.NODE_ENV === 'production' ? '/mall' : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/mall' : '/',
   outputDir: __dirname + '/../server/mall'
 }
