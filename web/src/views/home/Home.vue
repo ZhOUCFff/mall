@@ -50,142 +50,144 @@ import GoodsListItem from 'components/content/goods/GoodsListItem'
 import Scroll from 'components/common/scroll/Scroll'
 
 //导入网络请求
-import { getHomeData,getHomeGoods } from 'network/home'
+import { getHomeData, getHomeGoods } from 'network/home'
 
 export default {
-name: "Home",
-mixins: [bttMixin],
-data() {
-  return {
-    //轮播图数据
-    swiperData: [],
-    //推荐模块数据
-    recommendData: [],
-    //tab-control数据
-    tabControlData: ['流行','新款','精选'],
-    //首页商品数据
-    goods: {
-      'pop': {page: 1, list:[]},
-      'new': {page: 1, list:[]},
-      'sell': {page: 1, list:[]},
+  name: "Home",
+  mixins: [bttMixin],
+  data() {
+    return {
+      //轮播图数据
+      swiperData: [],
+      //推荐模块数据
+      recommendData: [],
+      //tab-control数据
+      tabControlData: ['流行', '新款', '精选'],
+      //首页商品数据
+      goods: {
+        'pop': { page: 1, list: [] },
+        'new': { page: 1, list: [] },
+        'sell': { page: 1, list: [] },
+      },
+      goodsType: 'pop',
+      isTCSshow: false,
+      tcOffsetTop: 0,
+      homeY: 0
+    }
+  },
+  components: {
+    HomeNavBar,
+    HomeSwiper,
+    HomeRecommendView,
+    FeatureView,
+    TabControl,
+    GoodsList,
+    GoodsListItem,
+    Scroll,
+  },
+  computed: {
+    scroll() {
+      return this.$refs.scroll
+    }
+  },
+  methods: {
+    // 事件监听相关
+    tabControlClick(index) {
+      switch (index) {
+        case 0:
+          this.goodsType = 'pop';
+          break;
+        case 1:
+          this.goodsType = 'new';
+          break;
+        case 2:
+          this.goodsType = 'sell'
+          break;
+      }
+
+      this.$router.replace('/home/' + this.goodsType).catch(err => {
+        err
+      })
+      this.$refs.tabConrol1.currentIndex = index
+      this.$refs.tabConrol2.currentIndex = index
     },
-    goodsType: 'pop',
-    isTCSshow: false,
-    tcOffsetTop: 0,
-    homeY: 0
-  }
-},
-components: {
-  HomeNavBar,
-  HomeSwiper,
-  HomeRecommendView,
-  FeatureView,
-  TabControl,
-  GoodsList,
-  GoodsListItem,
-  Scroll,
-},
-computed: {
-  scroll() {
-    return this.$refs.scroll
-  }
-},
-methods: {
-  // 事件监听相关
-  tabControlClick(index) {
-    switch(index) {
-      case 0:
-        this.goodsType = 'pop';
-        break;
-      case 1:
-        this.goodsType = 'new';
-        break;
-      case 2:
-        this.goodsType = 'sell'
-        break;
-    }
-    
-    this.$router.replace('/home/'+this.goodsType).catch(err=> {
-      err
-    })
-    this.$refs.tabConrol1.currentIndex = index
-    this.$refs.tabConrol2.currentIndex = index
-  },
-  homeScroll(position) {
-    //监听tab-control滚动纵坐标
-      this.isTCSshow = -position.y>=this.tcOffsetTop
+    homeScroll(position) {
+      //监听tab-control滚动纵坐标
+      this.isTCSshow = -position.y >= this.tcOffsetTop
 
-    //监听home滚动到哪显示隐藏回到顶部按钮
+      //监听home滚动到哪显示隐藏回到顶部按钮
       this.showBtt(position)
-  },
-  //监听上拉加载
-  pullUpLoad() {
-    this.getHomeGoods(this.goodsType)
-  },
+    },
+    //监听上拉加载
+    pullUpLoad() {
+      this.getHomeGoods(this.goodsType)
+    },
 
-  //网络请求相关
-  getHomeData() {
-    getHomeData().then(res => {
-    //获取轮播图数据
-    this.swiperData = res.data.banner.list
-    //获取推荐数据
-    this.recommendData = res.data.recommend.list
-    })
-  },
-  getHomeGoods(type) {
-    if(this.goods[type].page) {
-      getHomeGoods(type,this.goods[type].page).then(res => {
-      this.goods[type].list.push(...res.data.list)
-      this.goods[type].page++
-      this.$refs.scroll.finishPullUp()
-    })
+    //网络请求相关
+    getHomeData() {
+      getHomeData().then(res => {
+        //获取轮播图数据
+        this.swiperData = res.data.banner.list
+        //获取推荐数据
+        this.recommendData = res.data.recommend.list
+      })
+    },
+    getHomeGoods(type) {
+      if (this.goods[type].page) {
+        console.log(111);
+        getHomeGoods(type, this.goods[type].page).then(res => {
+          console.log(res);
+          this.goods[type].list.push(...res.data.list)
+          this.goods[type].page++
+          this.$refs.scroll.finishPullUp()
+        })
+      }
     }
-  }
-},
-created() {
-  // 请求数据
-  this.getHomeData()
-  //请求商品数据
-  this.getHomeGoods('pop')
-  this.getHomeGoods('new')
-  this.getHomeGoods('sell')
-},
-mounted() {
-  if(this.$route.path == '/home/pop') {
-    this.goodsType = 'pop'
-    this.$refs.tabConrol1.currentIndex = 0
-    this.$refs.tabConrol2.currentIndex = 0
-  }else if(this.$route.path == '/home/new') {
-    this.goodsType = 'new'
-    this.$refs.tabConrol1.currentIndex = 1
-    this.$refs.tabConrol2.currentIndex = 1
-  }else {
-    this.goodsType = 'sell'
-    this.$refs.tabConrol1.currentIndex = 2
-    this.$refs.tabConrol2.currentIndex = 2
-  }
+  },
+  created() {
+    // 请求数据
+    this.getHomeData()
+    //请求商品数据
+    this.getHomeGoods('pop')
+    this.getHomeGoods('new')
+    this.getHomeGoods('sell')
+  },
+  mounted() {
+    if (this.$route.path == '/home/pop') {
+      this.goodsType = 'pop'
+      this.$refs.tabConrol1.currentIndex = 0
+      this.$refs.tabConrol2.currentIndex = 0
+    } else if (this.$route.path == '/home/new') {
+      this.goodsType = 'new'
+      this.$refs.tabConrol1.currentIndex = 1
+      this.$refs.tabConrol2.currentIndex = 1
+    } else {
+      this.goodsType = 'sell'
+      this.$refs.tabConrol1.currentIndex = 2
+      this.$refs.tabConrol2.currentIndex = 2
+    }
 
-  // 对图片加载进行防抖操作
-  const refresh = debounce(this.scroll.refresh,50)
-  // 监听商品列表图片加载
-  this.$bus.$on('gliImgLoad',() => {
-    this.scroll && refresh()
-  })
-  //监听轮播图片加载
-  this.$bus.$on('hsImgLoad',() => {
-    this.scroll && refresh()
-    this.tcOffsetTop = this.$refs.tabConrol2.$el.offsetTop
-  })
-},
-activated() {
-  this.scroll.refresh()
-  //保持状态
-  this.scroll.scrollTo(0,this.homeY,0)
-},
-deactivated() {
-  //记录离开时的y坐标
-  this.homeY = this.scroll.scroll.y
-}
+    // 对图片加载进行防抖操作
+    const refresh = debounce(this.scroll.refresh, 50)
+    // 监听商品列表图片加载
+    this.$bus.$on('gliImgLoad', () => {
+      this.scroll && refresh()
+    })
+    //监听轮播图片加载
+    this.$bus.$on('hsImgLoad', () => {
+      this.scroll && refresh()
+      this.tcOffsetTop = this.$refs.tabConrol2.$el.offsetTop
+    })
+  },
+  activated() {
+    this.scroll.refresh()
+    //保持状态
+    this.scroll.scrollTo(0, this.homeY, 0)
+  },
+  deactivated() {
+    //记录离开时的y坐标
+    this.homeY = this.scroll.scroll.y
+  }
 }
 </script>
  

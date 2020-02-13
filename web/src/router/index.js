@@ -14,7 +14,7 @@ const Profile = () => import('views/profile/Profile')
 Vue.use(VueRouter)
 const routes = [
   {
-    path: '',
+    path: '/',
     redirect: '/home'
   },
   {
@@ -57,8 +57,7 @@ const routes = [
   }
 ]
 const router = new VueRouter({
-  routes,
-  mode: 'history'
+  routes
 })
 
 export default router

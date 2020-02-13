@@ -1,12 +1,12 @@
 const express = require('express')
 const cors = require('cors')
-const history = require('connect-history-api-fallback')
+// const history = require('connect-history-api-fallback')
 
 const app = express()
 
-app.use(cors())
+// app.use(cors())
 
-app.use(history())
+// app.use(history())
 
 // 托管静态资源
 app.use('/mall', express.static(__dirname + '/mall'))
