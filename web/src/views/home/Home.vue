@@ -134,9 +134,7 @@ export default {
     },
     getHomeGoods(type) {
       if (this.goods[type].page) {
-        console.log(111);
         getHomeGoods(type, this.goods[type].page).then(res => {
-          console.log(res);
           this.goods[type].list.push(...res.data.list)
           this.goods[type].page++
           this.$refs.scroll.finishPullUp()
