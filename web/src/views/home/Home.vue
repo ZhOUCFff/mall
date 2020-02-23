@@ -113,7 +113,9 @@ export default {
     },
     homeScroll(position) {
       //监听tab-control滚动纵坐标
-      this.isTCSshow = -position.y >= this.tcOffsetTop
+      if (this.tcOffsetTop !== 0) {
+        this.isTCSshow = -position.y >= this.tcOffsetTop
+      }
 
       //监听home滚动到哪显示隐藏回到顶部按钮
       this.showBtt(position)
