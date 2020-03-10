@@ -1,12 +1,17 @@
 <template>
   <div class="feature-view">
-    <img src="~assets/img/home/recommend_bg.jpg" />
+    <img src="~assets/img/home/recommend_bg.jpg" @load="ftvImgLoad" />
   </div>
 </template>
  
 <script>
 export default {
-name: "FeatureView"
+  name: "FeatureView",
+  methods: {
+    ftvImgLoad() {
+      this.$bus.$emit('ftvImgLoad')
+    }
+  }
 }
 </script>
  

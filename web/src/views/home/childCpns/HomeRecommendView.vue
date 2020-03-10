@@ -1,7 +1,7 @@
 <template>
   <div class="home-recommend-view">
-    <div v-for="item in recommend">
-      <img :src="item.image" />
+    <div v-for="(item,i) in recommend" :key="i">
+      <img :src="item.image" @load="rcmImgLoad" />
       <div class="recommend-title">{{item.title}}</div>
     </div>
   </div>
@@ -9,15 +9,28 @@
  
 <script>
 export default {
-name: "HomeRecommendView",
-props: {
-  recommend: {
-    type: Array,
-    default() {
-      return []
+  name: "HomeRecommendView",
+  props: {
+    recommend: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  },
+  data() {
+    return {
+      isLoad: true
+    }
+  },
+  methods: {
+    rcmImgLoad() {
+      if (this.isLoad) {
+        this.$bus.$emit('rcmImgLoad')
+      }
+      this.isLoad = false
     }
   }
-}
 }
 </script>
  

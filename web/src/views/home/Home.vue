@@ -178,6 +178,14 @@ export default {
       this.scroll && refresh()
       this.tcOffsetTop = this.$refs.tabConrol2.$el.offsetTop
     })
+    this.$bus.$on('ftvImgLoad', () => {
+      this.scroll && refresh()
+      this.tcOffsetTop = this.$refs.tabConrol2.$el.offsetTop
+    })
+    this.$bus.$on('rcmImgLoad', () => {
+      this.scroll && refresh()
+      this.tcOffsetTop = this.$refs.tabConrol2.$el.offsetTop
+    })
   },
   activated() {
     this.scroll.refresh()
