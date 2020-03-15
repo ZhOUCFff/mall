@@ -131,7 +131,7 @@ export default {
         //获取轮播图数据
         this.swiperData = res.data.banner.list
         //获取推荐数据
-        this.recommendData = res.data.recommend.list
+        this.recommendData = this.recommendData ? res.data.recommend.list : this.recommendData
       })
     },
     getHomeGoods(type) {
