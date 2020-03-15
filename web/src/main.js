@@ -9,6 +9,11 @@ import VueLazyLoad from 'vue-lazyload'
 
 Vue.config.productionTip = false
 
+//全局注册Swiper
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+import 'swiper/dist/css/swiper.css'
+Vue.use(VueAwesomeSwiper)
+
 //解决移动端300ms延迟问题
 FastClick.attach(document.body)
 

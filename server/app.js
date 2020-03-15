@@ -12,5 +12,5 @@ const app = express()
 app.use('/mall', express.static(__dirname + '/mall'))
 
 app.listen(3002, () => {
-  console.log('http://localhost:3002')
+  console.log('http://localhost:3002/mall')
 })

@@ -1,41 +1,47 @@
 <template>
-  <swiper class="dt-swiper">
-    <swiper-item class="dt-swiper-item" v-for="(item,index) in dtsImg" :key="index">
-      <img :src="item" @load="dtSwiperImgLoad" />
-    </swiper-item>
+  <swiper class="dt-swiper" :options="swiperOption">
+    <swiper-slide v-for="(item,index) in dtsImg" :key="index">
+      <img class="swiper-img" :src="item" @load="dtSwiperImgLoad" />
+    </swiper-slide>
+    <div class="swiper-pagination" slot="pagination"></div>
   </swiper>
 </template>
  
 <script>
-import { Swiper, SwiperItem } from 'components/common/swiper'
 
 export default {
-name: "DetailSwiper",
-data() {
-  return {
-    isLoad: true
-  }
-},
-props: {
-  dtsImg: {
-    type: Array,
-    default() {
-      return []
+  name: "DetailSwiper",
+  data() {
+    return {
+      swiperOption: {
+        loop: true,
+        autoplay: {
+          delay: 2500,
+          disableOnInteraction: false
+        },
+        pagination: {
+          el: '.swiper-pagination'
+        }
+      },
+      isLoad: true
     }
-  }
-},
-components: {
-  Swiper,
-  SwiperItem
-},
-methods: {
-  dtSwiperImgLoad() {
-    if(this.isLoad) {
-      this.$emit('dtSwiperImgLoad')
+  },
+  props: {
+    dtsImg: {
+      type: Array,
+      default() {
+        return []
+      }
     }
-    this.isLoad = false
-  }
-},
+  },
+  methods: {
+    dtSwiperImgLoad() {
+      if (this.isLoad) {
+        this.$emit('dtSwiperImgLoad')
+      }
+      this.isLoad = false
+    }
+  },
 }
 </script>
  
@@ -44,4 +50,8 @@ methods: {
   height: 300px;
   overflow: hidden;
 }
-</style>
+.swiper-img {
+  vertical-align: middle;
+  width: 100%;
+}
+</style> 

@@ -1,46 +1,52 @@
 <template>
-  <swiper>
-    <swiper-item v-for="(item,index) in swiperImg" :key="index">
-      <img :src="item.image" @load="hsImgLoad" />
-    </swiper-item>
+  <swiper :options="swiperOption">
+    <swiper-slide v-for="(item,index) in swiperImg" :key="index">
+      <img class="swiper-img" :src="item.image" @load="hsImgLoad" />
+    </swiper-slide>
+    <div class="swiper-pagination" slot="pagination"></div>
   </swiper>
 </template>
  
 <script>
-import { Swiper, SwiperItem } from 'components/common/swiper'
-
 export default {
-name: "HomeSwiper",
-data() {
-  return {
-    isLoad: true
-  }
-},
-props: {
-  swiperImg: {
-    type: Array,
-    default() {
-      return []
+  name: "HomeSwiper",
+  data() {
+    return {
+      swiperOption: {
+        loop: true,
+        autoplay: {
+          delay: 2500,
+          disableOnInteraction: false
+        },
+        pagination: {
+          el: '.swiper-pagination'
+        }
+      },
+      isLoad: true
+    }
+  },
+  props: {
+    swiperImg: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  },
+  methods: {
+    hsImgLoad() {
+      if (this.isLoad) {
+        this.$bus.$emit('hsImgLoad')
+      }
+      this.isLoad = false
     }
   }
-},
-components: {
-  Swiper,
-  SwiperItem
-},
-methods: {
-  hsImgLoad() {
-    if(this.isLoad){
-      this.$bus.$emit('hsImgLoad')
-    }
-    this.isLoad = false
-  }
-}
 }
 </script>
  
 <style scoped>
-img {
+.swiper-img {
   vertical-align: middle;
+  width: 100%;
 }
 </style>

@@ -58,9 +58,9 @@ export default {
   data() {
     return {
       //轮播图数据
-      swiperData: [],
+      swiperData: null,
       //推荐模块数据
-      recommendData: [],
+      recommendData: null,
       //tab-control数据
       tabControlData: ['流行', '新款', '精选'],
       //首页商品数据
