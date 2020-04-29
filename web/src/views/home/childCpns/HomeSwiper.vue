@@ -1,5 +1,5 @@
 <template>
-  <swiper v-if="isAlive" :options="swiperOption" ref="mySwiper">
+  <swiper :options="swiperOption" ref="mySwiper">
     <swiper-slide v-for="(item,index) in swiperImg" :key="index">
       <img class="swiper-img" :src="item.image" @load="hsImgLoad" />
     </swiper-slide>
@@ -22,8 +22,7 @@ export default {
           el: '.swiper-pagination'
         }
       },
-      isLoad: true,
-      isAlive: true,
+      isLoad: true
     }
   },
   props: {
@@ -43,10 +42,10 @@ export default {
     }
   },
   activated() {
-    this.isAlive = true
+    this.$refs.mySwiper && this.$refs.mySwiper.swiper.autoplay.start()
   },
   deactivated() {
-    this.isAlive = false
+    this.$refs.mySwiper && this.$refs.mySwiper.swiper.autoplay.stop()
   }
 }
 </script>
